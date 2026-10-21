@@ -8,6 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Iceberg&family=Jockey+One&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Quantico:ital,wght@0,400;0,700;1,400;1,700&family=Texturina:ital,opsz,wght@0,12..72,100..900;1,12..72,100..900&display=swap" rel="stylesheet">
+<script src="https://threejs.org/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/giojs@2.2.1/build/gio.min.js"></script> 
 </head>
 <body style="display: flex; flex-direction: column;">
         <header style="display: flex; flex-direction: column;">
@@ -21,18 +23,37 @@
 
    
 </header>
+<nav id="menu">
+    <a href="#spins">Your Spins</a>
 
-<section class="P-con" id="p-can">
+</nav>
+
+<section id="globe-con">
+    <div id="globalArea"></div>
 </section>
-<footer class="footer" style="position: relative; bottom: 0; margin-top: 4rem;">
 
+<footer class="footer">
+<details> <summary>How does this work?</summary>
+    It spins a globe and basically tells you stuff about whatever country you land on</details>
 
-    </footer>
+<details> <summary>Why make this?</summary>
+   Well, I am personally terrible at anything Geography. My knowledge of countries is extremely scattered and I honest to god could not tell you where Bangladesh is</details>
+
+<details> <summary>But what if I can't remember anything about the country after I spin?</summary>
+ There's a quiz mode where you can fill in the blanks of what you just read! 
+ </details>
+ <details> <summary>What is the 'Collection' all about?</summary>
+ It quizzes you on the countries that you've landed on before!
+ </details>
+     </footer>
 
 
 </body>
 <script> 
-    
+    const globeCon = document.getElementById("globalArea")
+    const guider = new GIO.Controller(globeCon)
+
+    guider.init();
 </script>
 <script src="van.js"></script>
 </html>

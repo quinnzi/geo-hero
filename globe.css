@@ -44,14 +44,37 @@ header {
 }
 #tit1{
 	font-family: Quantico;
-	font-size: 10vh;
+	font-size: 8vh;
 	color: black;
 	text-align: center;
 	padding: 0;
 	margin: 0;
 	margin-top: 2vh;
+
 }
 
 #tit2{
+font-size:3vh;
+	padding: 0;
+	margin: 0;
+	padding-bottom: 1vh;
+}
 
+#menu{
+	
+	color: lightslategrey;
+	padding: 2vh;
+
+}
+
+#menu a{
+	color: white;
+	font-size: 3.4vh;
+	background-color: black;
+	height: 20vh;
+
+}
+
+#globe-con{
+	min-height: 100vh;
 }
