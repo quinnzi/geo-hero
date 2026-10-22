@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.3.0",
+    "fs": "^0.0.1-security",
+    "gio.js": "^1.0.0",
+    "giojs": "^2.2.2",
+    "three": "^0.186.1",
+    "three.js": "^0.77.1"
+  },
+  "devDependencies": {
+    "vite": "^8.3.5"
+  }
+}
