@@ -13,7 +13,7 @@
 </head>
 <body>
 </head>
-<body style="display: flex; flex-direction: column;">
+<body style="display: flex; flex-direction: column; width: 100%;">
         <header style="display: flex; flex-direction: column; margin: 0;">
     <section class="header">
         <div id="title-con">
@@ -25,10 +25,41 @@
 
    
 </header>
-
+<button id="spin">Spin!</button>
 
 <section id="globe-con">
     <div id="globalArea"></div>
+    <div id="infoCon">
+        <h1 id="cName">No country loaded yet</h1>
+        <img src="map.png" style="width: 15rem; margin: 2rem;">
+
+        <div id="Population">
+            <h2>Population:</h2>
+            <p>13454543</p>
+        </div>
+
+        <div id="langCon">
+            <h2>Languages</h2>
+            <div>
+            <p>French</p>
+            <p>Spanish</p>
+            </div>
+        </div>
+        
+        <div id="curGov">
+            <div id="cur">
+                <h2>Currency</h2>
+                <p>Yen</p>
+            </div>
+
+            <div id="gov">
+                <h2>Government Type</h2>
+                <p>Oligarchy</p>
+            </div>
+            
+        </div>
+
+    </div>
 </section>
 
 <footer class="footer">
@@ -50,7 +81,18 @@
 </body>
 
 <script> 
+let cIndex = 0
+const loggedCountries = []
+function pickCountry(){
+  cIndex = Math.floor(Math.random() * 177) 
+}
+
+
+let globe 
 fetch('/ne_110m_admin_0_countries.geojson').then(res => res.json()).then(countries => {
+    pickCountry()
+    const lng = countries.features[cIndex].properties["LABEL_X"]
+    const lat =  countries.features[cIndex].properties["LABEL_Y"]
     const myGlobe = new Globe(document.getElementById("globalArea")).backgroundColor('#EBFFF0')
   .globeImageUrl("mpppp.png")
         .pointsData([])
@@ -64,9 +106,32 @@ fetch('/ne_110m_admin_0_countries.geojson').then(res => res.json()).then(countri
           Population: <i>${d.POP_EST}</i>
         `);
 
-})
+
+async function spin() {
+
+    let runs = 0
+    myGlobe.controls().autoRotate = true; 
+    myGlobe.controls().autoRotateSpeed = 200; 
+    const pacer = setInterval(()=>
+    {runs = runs + 40
+    myGlobe.controls().autoRotateSpeed = 199 - runs
+        if (runs === 160){
+        clearInterval(pacer)
+        myGlobe.controls().autoRotate = false; 
+        myGlobe.pointOfView({lat, lng}, [2000]);
+    }
+}, 1000);
 
 
+
+}
+const spinB = document.getElementById('spin')
+spinB.addEventListener('click', spin)
+
+
+}
+
+)
 
 </script>
 
