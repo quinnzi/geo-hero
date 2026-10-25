@@ -130,9 +130,11 @@ font-size:3vh;
 }
 
 .footer details{
-margin:2rem;
+margin:5rem;
 font-size: 5vh;
 color:white;
+padding: 2rem;
+text-align: center;
 }
 
 #infoCon{

@@ -19,7 +19,7 @@
         <div id="title-con">
         <h1 id="tit1">Geospin</h1>
         <h1 id="tit2">(A small educator for the geographically illiterate)</h1>
-
+        
        </div>
     </section>
 
@@ -31,30 +31,30 @@
     <div id="globalArea"></div>
     <div id="infoCon">
         <h1 id="cName">No country loaded yet</h1>
-        <img src="map.png" style="width: 15rem; margin: 2rem;">
+        <img src="map.png" style="width: 15rem; margin: 2rem;" id="flag">
 
         <div id="Population">
             <h2>Population:</h2>
-            <p>13454543</p>
+            <p id="pop"></p>
         </div>
 
         <div id="langCon">
             <h2>Languages</h2>
             <div>
-            <p>French</p>
-            <p>Spanish</p>
+            <p id="langs"></p>
+   
             </div>
         </div>
         
         <div id="curGov">
             <div id="cur">
                 <h2>Currency</h2>
-                <p>Yen</p>
+                <p id="Currency"></p>
             </div>
 
             <div id="gov">
                 <h2>Government Type</h2>
-                <p>Oligarchy</p>
+                <p id="govType"></p>
             </div>
             
         </div>
@@ -63,6 +63,8 @@
 </section>
 
 <footer class="footer">
+    <details> <summary>Why did you make this?</summary>
+    Okay Okay, so it's a long story made by many many many years of not being properly educated about the landforms on Earth. I asked my mother if she knew that Jamaica was not in in "Africa" and she said "Of course I did??" so, my ignorance is not universal. Still, there must be people like me who know little about this small tiny universe rock, and this is for you guys!</details>
 <details> <summary>How does this work?</summary>
     It spins a globe and basically tells you stuff about whatever country you land on</details>
 
@@ -87,10 +89,11 @@ function pickCountry(){
   cIndex = Math.floor(Math.random() * 177) 
 }
 
-
+let currentCountry 
 let globe 
 fetch('/ne_110m_admin_0_countries.geojson').then(res => res.json()).then(countries => {
     pickCountry()
+    currentCountry = countries.features[cIndex].properties["NAME"].toLowerCase()
     const lng = countries.features[cIndex].properties["LABEL_X"]
     const lat =  countries.features[cIndex].properties["LABEL_Y"]
     const myGlobe = new Globe(document.getElementById("globalArea")).backgroundColor('#EBFFF0')
@@ -107,8 +110,9 @@ fetch('/ne_110m_admin_0_countries.geojson').then(res => res.json()).then(countri
         `);
 
 
-async function spin() {
 
+async function spin() {
+console.log( countries.features[cIndex].properties)
     let runs = 0
     myGlobe.controls().autoRotate = true; 
     myGlobe.controls().autoRotateSpeed = 200; 
@@ -120,14 +124,49 @@ async function spin() {
         myGlobe.controls().autoRotate = false; 
         myGlobe.pointOfView({lat, lng}, [2000]);
     }
+
 }, 1000);
 
+myGlobe.camera().zoom = 3
+try{
+
+const response = await fetch(
+  `https://countries.dev/alpha/${countries.features[cIndex].properties.ISO_A2.replace(/\s/g, '')}`,
+{   headers: 
+ { 
+   "Content-Type": "application/json",
+'Access-Control-Allow-Origin':'GET'
+}} )
+
+const countryData = await response.json();
+
+console.log(countryData)
+loggedCountries.push({cIndex: cIndex, 
+population: countryData.population,
+name: currentCountry,
+languages: countryData.languages,
+currency: countryData.currencies[0].name})
 
 
 }
+
+catch(err){
+    console.error(err)
+}
+document.getElementById("Currency").textContent = countryData.currencies[0].name
+document.getElementById("langs").textContent = countryData.languages
+document.getElementById("pop").textContent = countryData.population
+document.getElementById("cName").textContent = currentCountry
+}
+
 const spinB = document.getElementById('spin')
 spinB.addEventListener('click', spin)
 
+window.addEventListener('keydown', (e)=>{
+    if (event.code === "Space"){
+        spin()
+    }}
+)
 
 }
 

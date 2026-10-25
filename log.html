@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeoSpin</title>
+    <link rel="stylesheet" href="globe.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Iceberg&family=Jockey+One&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Quantico:ital,wght@0,400;0,700;1,400;1,700&family=Texturina:ital,opsz,wght@0,12..72,100..900;1,12..72,100..900&display=swap" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/globe.gl"></script>
+</head>
+<body>
+</head>
+<body style="display: flex; flex-direction: column; width: 100%;">
+        <header style="display: flex; flex-direction: column; margin: 0;">
+    <section class="header">
+        <div id="title-con">
+        <h1 id="tit1">Geospin</h1>
+        <h1 id="tit2">(A small educator for the geographically illiterate)</h1>
+        
+       </div>
+    </section>
+
+   
+</header>
+
+
+<section id="globe-con">
+   <h2>Jamaica</h2>
+</section>
+
+<footer class="footer">
+    <details> <summary>Why did you make this?</summary>
+    Okay Okay, so it's a long story made by many many many years of not being properly educated about the landforms on Earth. I asked my mother if she knew that Jamaica was not in in "Africa" and she said "Of course I did??" so, my ignorance is not universal. Still, there must be people like me who know little about this small tiny universe rock, and this is for you guys!</details>
+<details> <summary>How does this work?</summary>
+    It spins a globe and basically tells you stuff about whatever country you land on</details>
+
+<details> <summary>Why make this?</summary>
+   Well, I am personally terrible at anything Geography. My knowledge of countries is extremely scattered and I honest to god could not tell you where Bangladesh is</details>
+
+<details> <summary>But what if I can't remember anything about the country after I spin?</summary>
+ There's a quiz mode where you can fill in the blanks of what you just read! 
+ </details>
+ <details> <summary>What is the 'Collection' all about?</summary>
+ It quizzes you on the countries that you've landed on before!
+ </details>
+     </footer>
+
+
+</body>
+
+<script> 
+let cIndex = 0
+const loggedCountries = []
+function pickCountry(){
+  cIndex = Math.floor(Math.random() * 177) 
+}
+
+let currentCountry 
+let globe 
+fetch('/ne_110m_admin_0_countries.geojson').then(res => res.json()).then(countries => {
+    pickCountry()
+    currentCountry = countries.features[cIndex].properties["NAME"].toLowerCase()
+    const lng = countries.features[cIndex].properties["LABEL_X"]
+    const lat =  countries.features[cIndex].properties["LABEL_Y"]
+    const myGlobe = new Globe(document.getElementById("globalArea")).backgroundColor('#EBFFF0')
+  .globeImageUrl("mpppp.png")
+        .pointsData([])
+        .hexPolygonsData(countries.features)
+        .hexPolygonResolution(3)
+        .hexPolygonMargin(0.3)
+        .hexPolygonUseDots(false)
+        .hexPolygonColor(() => `#${Math.round(Math.random() * Math.pow(2, 24)).toString(16).padStart(6, '0')}`)
+        .hexPolygonLabel(({ properties: d }) => `
+          <b>${d.ADMIN} (${d.ISO_A2})</b> <br />
+          Population: <i>${d.POP_EST}</i>
+        `);
+
+
+
+async function spin() {
+console.log( countries.features[cIndex].properties)
+    let runs = 0
+    myGlobe.controls().autoRotate = true; 
+    myGlobe.controls().autoRotateSpeed = 200; 
+    const pacer = setInterval(()=>
+    {runs = runs + 40
+    myGlobe.controls().autoRotateSpeed = 199 - runs
+        if (runs === 160){
+        clearInterval(pacer)
+        myGlobe.controls().autoRotate = false; 
+        myGlobe.pointOfView({lat, lng}, [2000]);
+    }
+
+}, 1000);
+
+
+}
+
+const spinB = document.getElementById('spin')
+spinB.addEventListener('click', spin)
+
+
+}
+
+)
+
+</script>
+
+</html>
+
