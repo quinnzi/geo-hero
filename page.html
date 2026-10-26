@@ -31,33 +31,33 @@
     <div id="globalArea"></div>
     <div id="infoCon">
         <h1 id="cName">No country loaded yet</h1>
-        <img src="map.png" style="width: 15rem; margin: 2rem;" id="flag">
+        <img style="width: 15rem; margin: 2rem;" id="flag">
 
-        <div id="Population">
+        <div id="Population" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
             <h2>Population:</h2>
-            <p id="pop"></p>
+            <input readonly id="pop"></input>
         </div>
 
         <div id="langCon">
             <h2>Languages</h2>
-            <div>
-            <p id="langs"></p>
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <input readonly id="langs"></input>
    
             </div>
         </div>
         
-        <div id="curGov">
-            <div id="cur">
+      
+            <div id="cur" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
                 <h2>Currency</h2>
-                <p id="Currency"></p>
-            </div>
-
-            <div id="gov">
-                <h2>Government Type</h2>
-                <p id="govType"></p>
+                <input readonly id="Currency"></input>
             </div>
             
-        </div>
+            <div id="gov" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <h2>Government Type</h2>
+                <input readonly id="govType"></input>
+            </div>
+            
+      
 
     </div>
 </section>
@@ -142,18 +142,17 @@ currency: countryData.currencies[0].name})
         clearInterval(pacer)
         myGlobe.controls().autoRotate = false; 
         myGlobe.pointOfView({lat, lng}, [2000]);
+
+
     }
 
 }, 1000);
 
 
-
-
-document.getElementById("Currency").textContent = countryData.currencies[0].name
-document.getElementById("langs").textContent = countryData.languages[0]
-document.getElementById("pop").textContent = countryData.population
-document.getElementById("cName").textContent = currentCountry}
-
+document.getElementById("langs").value = countryData.languages[0].name
+document.getElementById("pop").value = countryData.population
+document.getElementById("cName").textContent = currentCountry
+document.getElementById("flag").src = countryData.flags.svg}
 
 
 catch(err){

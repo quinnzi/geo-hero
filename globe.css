@@ -170,3 +170,9 @@ p{
 	z-index: 1000;
 	font-family: montserrat;
 }
+input {
+    padding: 0.8rem;
+    font-size: 1.1vw;
+    text-align: center;
+    align-self: center;
+}

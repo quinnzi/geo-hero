@@ -18,7 +18,7 @@ app.use(express.static(path.join(__dirname)));
 app.get("/", (req, res)=>{
 	res.sendFile(__dirname + '/page.html')
 })
-app.listen(3000, (err, next)=>{
+app.listen(3001, (err, next)=>{
     if(err){console.log(err)}
     console.log('She might be listening...')
 }
