@@ -21,6 +21,10 @@
         <h1 id="tit2">(A small educator for the geographically illiterate)</h1>
         
        </div>
+       <div>
+          <img style="width: 4rem; margin: 1rem;" id="log" src="history.svg">
+             <img style="width: 4rem; margin: 1rem;" id="quiz" src="quiz-mode.svg">
+             </div>
     </section>
 
    
@@ -31,7 +35,7 @@
     <div id="globalArea"></div>
     <div id="infoCon">
         <h1 id="cName">No country loaded yet</h1>
-        <img style="width: 15rem; margin: 2rem;" id="flag">
+        <img style="width: 15rem; margin: 2rem;" id="flag" src="image.png">
 
         <div id="Population" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
             <h2>Population:</h2>
@@ -40,8 +44,8 @@
 
         <div id="langCon">
             <h2>Languages</h2>
-            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-            <input readonly id="langs"></input>
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;" id="languagesC">
+           
    
             </div>
         </div>
@@ -49,7 +53,7 @@
       
             <div id="cur" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
                 <h2>Currency</h2>
-                <input readonly id="Currency"></input>
+              
             </div>
             
             <div id="gov" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
@@ -60,6 +64,15 @@
       
 
     </div>
+ <div id="fun">
+    <h2 style="background-color: rgba(21, 24, 22, 0.747); color: rgb(225, 241, 228); margin-top: 0; border-top-right-radius: 20px; border-top-left-radius: 16px; width: 100%; padding: 1rem; ">Fun Fact</h2>
+    <p id="ff"></p>
+    <a id="fs"></a>
+ </div>
+     <div id="news">
+    <h2 style="background-color: rgba(21, 21, 24, 0.747); color: rgb(225, 241, 228); margin-top: 0; border-top-right-radius: 20px; border-top-left-radius: 16px; width: 100%; height: 100%; padding: 1rem; border-bottom-right-radius: 20px; border-bottom-left-radius: 16px;">News &#8681</h2>
+   
+ </div>
 </section>
 
 <footer class="footer">
@@ -83,24 +96,28 @@
 </body>
 
 <script> 
+let currentCountry 
 let cIndex = 0
 const loggedCountries = []
-function pickCountry(){
-  cIndex = Math.floor(Math.random() * 177) 
-}
 
-let currentCountry 
+
 let globe 
 fetch('/ne_110m_admin_0_countries.geojson').then(res => res.json()).then(countries => {
+    function pickCountry(){
+  cIndex = Math.floor(Math.random() * 177) 
+      currentCountry = countries.features[cIndex].properties["NAME"].toLowerCase()
+
+}
+
     pickCountry()
-    currentCountry = countries.features[cIndex].properties["NAME"].toLowerCase()
+    console.log(countries.features[cIndex].properties)
     let lng = countries.features[cIndex].properties["LABEL_X"]
     let lat =  countries.features[cIndex].properties["LABEL_Y"]
     const myGlobe = new Globe(document.getElementById("globalArea")).backgroundColor('#EBFFF0')
   .globeImageUrl("mpppp.png")
         .pointsData([])
         .hexPolygonsData(countries.features)
-        .hexPolygonResolution(3)
+        .hexPolygonResolution(4)
         .hexPolygonMargin(0.3)
         .hexPolygonUseDots(false)
         .hexPolygonColor(() => `#${Math.round(Math.random() * Math.pow(2, 24)).toString(16).padStart(6, '0')}`)
@@ -109,7 +126,42 @@ fetch('/ne_110m_admin_0_countries.geojson').then(res => res.json()).then(countri
           Population: <i>${d.POP_EST}</i>
         `);
 
+function popUp() {
+    myGlobe.camera().updateProjectionMatrix()
+   myGlobe.labelsData([])
+   .labelLat(lat)
+      .labelLng(lng)
+      .labelText(currentCountry)
+      .labelSize(130)
+      .labelDotRadius(130)
+      .labelColor(() => 'rgba(255, 165, 0, 0.75)')
+      .labelResolution(4);
+myGlobe.camera().updateProjectionMatrix()
+}
 
+async function getFunFact(){
+    const abbr = countries.features[cIndex].properties["ISO_A2"]
+   const reply = await fetch(`https://vantilburger.com/CountryFactsAPI/fact/random.php?cc=${abbr}`)
+   const fact = await reply.json()
+   if (reply.status === 404) {
+       document.getElementById("ff").textContent = "No fun fact found for this country :("
+       return
+   }
+   document.getElementById("ff").textContent = fact.description
+   document.getElementById("fs").textContent = fact.link
+}
+
+function zoomSlow() {
+    let zoomF = 0
+    const zoo = setInterval(()=>{
+    zoomF++
+    myGlobe.camera().zoom = 1 + 0.1 * zoomF 
+    myGlobe.camera().updateProjectionMatrix();
+    if (zoomF === 60){
+       clearTimeout(zoo)
+    }
+    }, 15)
+}
 
 async function spin() {
     try{
@@ -134,31 +186,54 @@ loggedCountries.push({cIndex: cIndex,
 population: countryData.population,
 name: currentCountry,
 languages: countryData.languages,
-currency: countryData.currencies[0].name})
+currency: countryData.currencies})
     const pacer = setInterval(()=>
     {runs = runs + 40
     myGlobe.controls().autoRotateSpeed = 199 - runs
-        if (runs === 160){
-        clearInterval(pacer)
+    
+        if (runs === 120){
+   
         myGlobe.controls().autoRotate = false; 
         myGlobe.pointOfView({lat, lng}, [2000]);
 
 
     }
+    if(runs === 160){
+                 zoomSlow()
+                 const langArray = countryData.languages
+                 langArray.forEach(language => {
+                    const box = document.createElement("input")
+                    box.value = language.name
+                    box.readOnly = true
+                    document.getElementById("languagesC").appendChild(box)
+                 });
+                 const curArray = countryData.currencies
+                 curArray.forEach(cur => {
+                    const box = document.createElement("input")
+                    box.value = cur.name
+                    box.readOnly = true
+                    document.getElementById("cur").appendChild(box)
+                 });
+document.getElementById("pop").value = countryData.population
+document.getElementById("cName").value = currentCountry
+document.getElementById("flag").src = countryData.flags.svg
+loggedCountries.push({country: currentCountry, image: countryData.flags.svg})
+localStorage.setItem("Countries", JSON.stringify(loggedCountries))
+     clearInterval(pacer)
+      getFunFact()
+ popUp()
 
+    }
 }, 1000);
 
 
-document.getElementById("langs").value = countryData.languages[0].name
-document.getElementById("pop").value = countryData.population
-document.getElementById("cName").textContent = currentCountry
-document.getElementById("flag").src = countryData.flags.svg}
+}
 
 
 catch(err){
     console.error(err)
 }
-myGlobe.camera().zoom = 3
+
 
 
 }
