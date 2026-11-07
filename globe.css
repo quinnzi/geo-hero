@@ -204,7 +204,8 @@ summary{
 .header{
 	display: flex;
 	align-items: center;
-	justify-content: space-evenly;
+	text-align: center;
+	justify-content: center;
 }
 #fun{
 	 background-color: #f7f7f7af;
@@ -218,7 +219,7 @@ summary{
  z-index: 999;
  left: 2rem;
  min-height: 15vh;
- min-width: 20vw;
+ width: 20vw;
 }
 #news{
  display: flex;

@@ -16,12 +16,12 @@
 <body style="display: flex; flex-direction: column; width: 100%;">
         <header style="display: flex; flex-direction: column; margin: 0;">
     <section class="header">
-        <div id="title-con">
+        <div id="title-con" style="display: flex; flex-direction: column; align-items: center; align-self: center;">
         <h1 id="tit1">Geospin</h1>
         <h1 id="tit2">(A small educator for the geographically illiterate)</h1>
         
        </div>
-       <div>
+       <div style="position: absolute; right: 0;">
           <img style="width: 4rem; margin: 1rem;" id="log" src="history.svg">
              <img style="width: 4rem; margin: 1rem;" id="quiz" src="quiz-mode.svg">
              </div>
@@ -57,8 +57,8 @@
             </div>
             
             <div id="gov" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                <h2>Government Type</h2>
-                <input readonly id="govType"></input>
+                <h2>Demonym</h2>
+                <input readonly id="dem"></input>
             </div>
             
       
@@ -66,7 +66,7 @@
     </div>
  <div id="fun">
     <h2 style="background-color: rgba(21, 24, 22, 0.747); color: rgb(225, 241, 228); margin-top: 0; border-top-right-radius: 20px; border-top-left-radius: 16px; width: 100%; padding: 1rem; ">Fun Fact</h2>
-    <p id="ff"></p>
+    <p id="ff" style="padding: 1rem;"></p>
     <a id="fs"></a>
  </div>
      <div id="news">
@@ -194,12 +194,12 @@ currency: countryData.currencies})
         if (runs === 120){
    
         myGlobe.controls().autoRotate = false; 
-        myGlobe.pointOfView({lat, lng}, [2000]);
+        myGlobe.pointOfView({lat, lng, altitude: 0.3}, [2000]);
 
 
     }
     if(runs === 160){
-                 zoomSlow()
+
                  const langArray = countryData.languages
                  langArray.forEach(language => {
                     const box = document.createElement("input")
@@ -215,7 +215,8 @@ currency: countryData.currencies})
                     document.getElementById("cur").appendChild(box)
                  });
 document.getElementById("pop").value = countryData.population
-document.getElementById("cName").value = currentCountry
+document.getElementById("cName").textContent = currentCountry
+document.getElementById("dem").value = countryData.denomyn
 document.getElementById("flag").src = countryData.flags.svg
 loggedCountries.push({country: currentCountry, image: countryData.flags.svg})
 localStorage.setItem("Countries", JSON.stringify(loggedCountries))
