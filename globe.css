@@ -234,6 +234,15 @@ padding: 0;
  min-width: 20vw;
  top: 45vh;
 }
+
+.counP{
+	display: flex;
+margin: 3rem;
+	width: 80%;
+	border-radius: 20px 11px;
+
+	background-color: palegreen;
+}
 @media only screen and (max-width: 768px) {
 	#infoCon{
 		 width: 100%;
@@ -245,3 +254,4 @@ left: unset;
 	}
 
 }
+
