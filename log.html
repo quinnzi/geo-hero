@@ -55,16 +55,21 @@
 </body>
 
 <script> 
-const log = localStorage.getItem("history")
-// A model for myself.
-const history = [
-{
-    name: France, 
-    
-
+const log = localStorage.getItem("Countries")
+const history = JSON.parse(log)
+ const no = document.createElement('p')
+if(!history){
+   
+    no.textContent = "No countries logged yet"
+    document.getElementById("historyCon").appendChild(no)
 }
-]
-
+else{
+    no.textContent = ""
+    const hisCo = document.createElement('div')
+    hisCo.className = "counP"
+    const couName = document.createElement('h2')
+    const times = document.createElement('p')
+}
 </script>
 
 </html>

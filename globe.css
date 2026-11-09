@@ -237,11 +237,14 @@ padding: 0;
 
 .counP{
 	display: flex;
-margin: 3rem;
+
 	width: 80%;
 	border-radius: 20px 11px;
 
-	background-color: palegreen;
+	background-color: rgb(242, 243, 242);
+}
+#check{
+	display: none;
 }
 @media only screen and (max-width: 768px) {
 	#infoCon{
