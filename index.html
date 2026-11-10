@@ -136,6 +136,7 @@ currentCountry = countries.features[cIndex].properties["NAME"].toLowerCase()
 async function spin() {
     try{
 pickCountry()
+myGlobe.pointOfView({lat: 0, lng: 0, altitude: 1.9}, [1000])
 document.getElementById("languagesC").innerHTML = ""
 document.getElementById("cur").innerHTML = ""
     lng = countries.features[cIndex].properties["LABEL_X"]
