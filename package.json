@@ -11,4 +11,11 @@
   "devDependencies": {
     "vite": "^8.3.5"
   }
+  ,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  }
+
 }
