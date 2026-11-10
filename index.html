@@ -50,9 +50,9 @@
             </div>
         </div>
         
-      
+      <h2>Currency</h2>
             <div id="cur" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                <h2>Currency</h2>
+                
               
             </div>
             
@@ -268,7 +268,7 @@ async function getFunFact(){
        document.getElementById("ff").textContent = "No fun fact found for this country :("
        return
    }
-   document.getElementById("ff").textContent = fact.description
+   document.getElementById("ff").innerHTML = fact.description
    document.getElementById("fs").textContent = fact.link
 }    
 
