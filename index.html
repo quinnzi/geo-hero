@@ -126,7 +126,7 @@ let currentCountry
 let cIndex = 0
 
 let globe 
-fetch('/ne_110m_admin_0_countries.geojson').then(res => res.json()).then(countries => {
+fetch('ne_110m_admin_0_countries.geojson').then(res => res.json()).then(countries => {
 function pickCountry(){
 cIndex = Math.floor(Math.random() * 177) 
 currentCountry = countries.features[cIndex].properties["NAME"].toLowerCase()
