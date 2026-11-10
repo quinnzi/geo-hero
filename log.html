@@ -27,27 +27,8 @@
 </header>
 
 
-<section id="historyCon">
-   <div class="counP">
-       <img src="map.png" style="width: 12rem; border-top-left-radius: 20px; border-bottom-left-radius: 20px;">
-      <div style="display: flex; justify-content: space-between; width: 100%;">
-       <div style="display:flex; flex-direction: column;">
-       <h2 style="margin: 1.2rem;">France</h2> 
-       <p style="margin: 1.3rem; font-size: 1.2vw;">Avg Quiz Score: none-yet</p>
-       </div>
-       <p style="margin: 3rem; font-size: 2vw;">x1</p>
-   </div>
-   </div>
-      <div class="counP">
-       <img src="map.png" style="width: 12rem; border-top-left-radius: 20px; border-bottom-left-radius: 20px;">
-      <div style="display: flex; justify-content: space-between; width: 100%;">
-       <div style="display:flex; flex-direction: column;">
-       <h2 style="margin: 1.2rem;">Libya</h2> 
-       <p style="margin: 1.3rem; font-size: 1.2vw;">Avg Quiz Score: none-yet</p>
-       </div>
-       <p style="margin: 3rem; font-size: 2vw;">x1</p>
-   </div>
-   </div>
+<section id="historyCon" style="padding-top: 3rem;">
+   
 </section>
 
 
@@ -55,20 +36,36 @@
 </body>
 
 <script> 
-const log = localStorage.getItem("Countries")
-const history = JSON.parse(log)
+
+const raw = localStorage.getItem("Countries")
+const log = JSON.parse(raw)
+console.log(log)
  const no = document.createElement('p')
-if(!history){
+
+localStorage.getItem("Countries")
+if(!log || log === null){
    
     no.textContent = "No countries logged yet"
     document.getElementById("historyCon").appendChild(no)
 }
 else{
-    no.textContent = ""
-    const hisCo = document.createElement('div')
-    hisCo.className = "counP"
-    const couName = document.createElement('h2')
-    const times = document.createElement('p')
+log.forEach(element => {
+    const logged = document.createElement("div")
+    logged.innerHTML =
+        `<div class='counP'>
+       <img src=${element.image} style="width: 12rem; border-top-left-radius: 20px; border-bottom-left-radius: 20px;">
+      <div style="display: flex; justify-content: space-between; width: 100%;">
+       <div style="display:flex; flex-direction: column;">
+       <h2 style="margin: 1.2rem;">${element.name}</h2> 
+       <p style="margin: 1.3rem; font-size: 1.2vw;">Avg Quiz Score: none-yet</p>
+       </div>
+       <p style="margin: 3rem; font-size: 2vw;">x${element.times}</p>
+   </div>`;
+    
+   document.getElementById("historyCon").appendChild(logged)
+
+    
+})
 }
 </script>
 

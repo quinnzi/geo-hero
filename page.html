@@ -21,9 +21,9 @@
         <h1 id="tit2">(A small educator for the geographically illiterate)</h1>
         
        </div>
-       <div style="position: absolute; right: 0;">
+       <div id="menu">
           <img style="width: 4rem; margin: 1rem;" id="log" src="history.svg" onclick="histOpen()">
-             <img style="width: 4rem; margin: 1rem;" id="quiz" src="quiz-mode.svg">
+             <img style="width: 4rem; margin: 1rem;" id="quiz" src="quiz-mode.svg" onclick="quizMode()">
              </div>
     </section>
 
@@ -69,10 +69,9 @@
     <p id="ff" style="padding: 1rem;"></p>
     <a id="fs"></a>
  </div>
-     <div id="news">
-    <h2 style="background-color: rgba(21, 21, 24, 0.747); color: rgb(225, 241, 228); margin-top: 0; border-top-right-radius: 20px; border-top-left-radius: 16px; width: 100%; height: 100%; padding: 1rem; border-bottom-right-radius: 20px; border-bottom-left-radius: 16px;">News &#8681</h2>
+     </div>
    
- </div>
+
 </section>
 
 <footer class="footer">
@@ -83,21 +82,34 @@
     educated about the landforms on Earth. I sort of just assued everyone 
     doesn't know where everything is, but that's simply not true. 
      I asked my mother if she knew that 
-     Jamaica was not in in Africa and she said 
+     Jamaica was not in Africa and she said 
      "Of course I did??". So, um, my ignorance 
-     is not universal. Still, I know there's people like me out there. I once stumbled upon a post where everyone had no clue india was in Asia. 
+     is not universal. Still, I know there's people like me out there. 
+     I once stumbled upon a post where everyone had no clue india was in Asia. 
      Those people right there, are who this tiny project is for :)</details>
 <details> <summary>How does this work?</summary>
-    It spins a globe and basically tells you stuff about whatever country you land on. When it comes out, you can click the quiz icon at the top right the quiz yourself on how much you remember about the country. You can also see all the countries you've landed on by pressing the history icon :)</details>
+    It spins a globe and basically tells you stuff about whatever country you land on. 
+    When it comes out, you can click the quiz icon at the top right the quiz yourself on how much you remember about the country. 
+    You can also see all the countries you've landed on by pressing the history icon :). The icon look like a clock!</details>
 
-<details> <summary>Why make this?</summary>
-   As forementioned, I am personally terrible at anything Geography. My knowledge of countries is extremely scattered and I honest to god could not tell you where Bangladesh is</details>
+<details> <summary>Why make this project?</summary>
+   As forementioned, I am personally terrible 
+   at anything Geography. My knowledge of countries 
+   is extremely scattered. I honest to God could not
+    tell you where on earth Bangladesh is. </details>
 
 <details> <summary>But what if I can't remember anything about the country after I spin?</summary>
- There's a quiz mode where you can fill in the blanks of what you just read! 
+ There's a quiz mode where you can 
+ fill in the blanks of what you just read! 
+ Just click on the question mark icon encased in a square!
  </details>
- <details> <summary>What is the 'Collection' all about?</summary>
- It quizzes you on the countries that you've landed on before!
+ <details> <summary>What is that icon with the question mark??</summary>
+ It quizzes you on the country that you're currently on! When you get something wrong it will highlight in red or green :)
+ </details>
+  <details> <summary>Is this project finished? If not, when will it be finished?</summary>
+ I still want to add a news feature and refine the quizzing, but for now I'm pretty happy w it. I think that this could be a really addicting tool if done right. I could add 
+ a points system, leaderboards, etc etc. Just think about it. Wouldn't you want to have the highest
+ country quiz rate on a leaderboard? I also want to maybe add a setting where you land on a country and have to get its name w/o a label.
  </details>
      </footer>
 
@@ -109,9 +121,10 @@
 function histOpen(){
     window.location.href = "log.html"
 }
+
 let currentCountry 
 let cIndex = 0
-localStorage.setItem("Countries", JSON.stringify([]))
+
 let globe 
 fetch('/ne_110m_admin_0_countries.geojson').then(res => res.json()).then(countries => {
 function pickCountry(){
@@ -122,8 +135,9 @@ currentCountry = countries.features[cIndex].properties["NAME"].toLowerCase()
 
 async function spin() {
     try{
-
 pickCountry()
+document.getElementById("languagesC").innerHTML = ""
+document.getElementById("cur").innerHTML = ""
     lng = countries.features[cIndex].properties["LABEL_X"]
     lat = countries.features[cIndex].properties["LABEL_Y"]
     currentCountry = countries.features[cIndex].properties["NAME"].toLowerCase()
@@ -143,7 +157,41 @@ myGlobe.controls().autoRotateSpeed = 200;
 
 
 console.log(countryData)
+
+let times // 
 const loggedCountries = JSON.parse(localStorage.getItem("Countries"))
+if(!loggedCountries || loggedCountries.length === 0){
+    console.log("First Spin!")
+times = 1
+localStorage.setItem("Countries", JSON.stringify([{name: currentCountry, image: countryData.flags.svg, times: 1}]))
+}
+else{
+    const ar = localStorage.getItem("Countries")
+    const stuffs = JSON.parse(ar)
+   stuffs.forEach(con =>{
+    if(con.name.toLowerCase() === currentCountry.toLowerCase()){
+        if(!con.times){
+            con.times = 1
+            
+        }
+        con.times = con.times + 1
+        times = 1
+        localStorage.setItem("Countries", JSON.stringify(stuffs))
+    }
+    else
+    {
+                if(!con.times){
+            con.times = 1
+        }
+        const pusher = JSON.parse(localStorage.getItem("Countries"))
+        pusher.push({name: currentCountry, image: countryData.flags.svg, times: times})
+        localStorage.setItem("Countries", JSON.stringify(pusher))
+    }
+})
+
+}
+
+
 
     const pacer = setInterval(()=>
     {runs = runs + 40
@@ -171,38 +219,18 @@ const loggedCountries = JSON.parse(localStorage.getItem("Countries"))
                     const box = document.createElement("input")
                     box.value = cur.name
                     box.readOnly = true
+                     box.className = "curC"
                     document.getElementById("cur").appendChild(box)
-                 });
+
+                
+                });
 document.getElementById("pop").value = countryData.population
 document.getElementById("cName").textContent = currentCountry
-document.getElementById("dem").value = countryData.denomyn
+document.getElementById("dem").value = countryData.demonym
 document.getElementById("flag").src = countryData.flags.svg
 
-
-
-if(loggedCountries.length === 0){
-    console.log("First Spin!")
-    localStorage.setItem("Countries", JSON.stringify([{name: currentCountry, img: countryData.flags.svg, times: 1}]))
-}
-else{
-    const cur = []
-JSON.parse(localStorage.getItem("Countries")).forEach(con =>{
-    if(cur.includes(con.name)){
-        con.times = con.times + 1
-    }
-    else
-    {
-        const pusher = JSON.parse(localStorage.getItem("Countries"))
-        cur.push(con.name)
-        localStorage.setItem("Countries", JSON.stringify(loggedCountries))
-    }
-})
-
-}
-
-
-     clearInterval(pacer)
-      getFunFact()
+clearInterval(pacer)
+getFunFact()
  popUp()
 
     }
@@ -221,7 +249,6 @@ catch(err){
 }
 
 function popUp() {
-    myGlobe.camera().updateProjectionMatrix()
    myGlobe.labelsData([])
    .labelLat(lat)
       .labelLng(lng)
@@ -230,7 +257,6 @@ function popUp() {
       .labelDotRadius(130)
       .labelColor(() => 'rgba(255, 165, 0, 0.75)')
       .labelResolution(4);
-myGlobe.camera().updateProjectionMatrix()
 }
 
 async function getFunFact(){
@@ -281,20 +307,32 @@ let correctP = document.getElementById("pop").value
 let correctD = document.getElementById("dem").value 
 
 let correctL = []
+let correctCur = []
 
 function quizMode() {
 document.getElementById("pop").readOnly = false
 document.getElementById("dem").readOnly = false
 
-const correctP = document.getElementById("pop").value 
-const correctD = document.getElementById("dem").value 
+correctP = document.getElementById("pop").value 
+correctD = document.getElementById("dem").value 
+
+document.getElementById("pop").value = ""
+document.getElementById("dem").value = ""
 
 const languages = Array.from(document.getElementsByClassName("langC"))
+const currencii = Array.from(document.getElementsByClassName("curC"))
 correctL = []
+correctCur = []
+
 languages.forEach(lan =>{
     correctL.push(lan.value)
-    lan = lan.readOnly = false
-     
+    lan.readOnly = false
+    lan.value = ""
+})
+currencii.forEach(cur =>{
+    correctCur.push(cur.value)
+    cur.readOnly = false
+    cur.value = ""
 })
 
 document.getElementById("check").style.display = "block"
@@ -302,26 +340,41 @@ document.getElementById("check").style.display = "block"
 
 document.getElementById("check").addEventListener("click", ()=>{
 const lanTries = []
+document.getElementsByClassName("langC").forEach(lc =>{
+    lanTries.push(lc.value.toLowerCase())
+}
+
+)
 const demonymTry = document.getElementById("dem").value
 const populationTry = document.getElementById("pop").value
 
 if(correctP.toLowerCase() === populationTry.toLowerCase()){
-    document.getElementById("pop").style.backgroundColor("green")
+    document.getElementById("pop").style.backgroundColor = "green"
 
 }
 else{
-    document.getElementById("pop").style.backgroundColor("red")
+    document.getElementById("pop").style.backgroundColor = "red"
 }
-
 if(correctD.toLowerCase() === demonymTry.toLowerCase()){
-    document.getElementById("dem").style.backgroundColor("green")
+    document.getElementById("dem").style.backgroundColor = "green"
 
 }
 else{
-    document.getElementById("dem").style.backgroundColor("red")
+    document.getElementById("dem").style.backgroundColor = "red"
 }
 
+const nodeL = document.getElementsByClassName("langC")
+const lArr = Array.from(nodeL)
 
+lArr.forEach(l =>{
+    if(!lanTries.includes(l.value.toLowerCase())){
+    l.style.backgroundColor("green")
+
+}
+else{
+    l.style.backgroundColor("red")
+}
+})
 
 })
 </script>

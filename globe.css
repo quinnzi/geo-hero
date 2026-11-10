@@ -246,15 +246,86 @@ padding: 0;
 #check{
 	display: none;
 }
+#menu{
+	position: absolute; right: 0;
+}
 @media only screen and (max-width: 768px) {
 	#infoCon{
 		 width: 100%;
+		 margin: 0;
 right: unset;
 left: unset;
- position:relative;
+ position:static;
  top: 90vh;
- z-index: 999;
+
 	}
+	#globe-con{
+
+	flex-direction: column;
+	justify-content: center;
+
+	
+}
+h2{
+	font-size: 170%;
+}
+#menu{
+	position: fixed; bottom: 0;
+	background-color: seagreen;
+	box-shadow: #324739 2px 3px 5px;
+	z-index: 10000;
+	width: 100%;
+	padding: .5rem;
+}
+#menu img{
+	margin: .5rem;
+	width: 3rem;
+}
+#fun{
+			 width: 100%;
+		 margin: 0;
+right: unset;
+left: unset;
+ position:static;
+margin-top: 1.5rem;
+
+}
+#spin{
+	min-width: 40vw;
+	align-self: center;
+	font-size: 4vw;
+		top: 20vh;
+	left: unset;
+	margin-top: 1.2rem;
+}
+#globalArea{
+	width: 100%;
+}
+#cName{
+	font-size: 7vw;
+}
+input{
+font-size: 7vw;
+}
+#fun p{
+	font-size: 6vw;
+}
+details{
+	font-size: .5vw;
+	margin: 1rem;
+}
+summary{
+	font-size: 6vw;
+	margin: 1rem;
+}
+.footer{
+	padding: .5rem;
+	padding-bottom: 12vh;
+}
+.counP{
+	width: 100%;
+	border-bottom: #5c5c5c 2px groove;
+}
 
 }
 
