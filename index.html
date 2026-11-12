@@ -169,27 +169,9 @@ localStorage.setItem("Countries", JSON.stringify([{name: currentCountry, image: 
 else{
     const ar = localStorage.getItem("Countries")
     const stuffs = JSON.parse(ar)
-   stuffs.forEach(con =>{
-    if(con.name.toLowerCase() === currentCountry.toLowerCase()){
-        if(!con.times){
-            con.times = 1
-            
-        }
-        con.times = con.times + 1
-        times = 1
-        localStorage.setItem("Countries", JSON.stringify(stuffs))
-    }
-    else
-    {
-                if(!con.times){
-            con.times = 1
-        }
-        const pusher = JSON.parse(localStorage.getItem("Countries"))
-        pusher.push({name: currentCountry, image: countryData.flags.svg, times: times})
-        localStorage.setItem("Countries", JSON.stringify(pusher))
-    }
-})
+   stuffs.push({name: currentCountry, image: countryData.flags.svg, times: 1})
 
+localStorage.setItem("Countries", JSON.stringify(stuffs))
 }
 
 
